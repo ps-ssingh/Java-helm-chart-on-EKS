@@ -1,0 +1,38 @@
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: workflow
+name: Build and push docker image to ECR
+on:
+  push:
+    branches:
+      - "main"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: cloudbees-io/checkout@v1
+    - name: Set up JDK 11
+      uses: docker://eclipse-temurin:17.0.8_7-jdk
+      with:
+          java-version: '11'
+          distribution: 'temurin'
+    - name: Build with Maven
+      uses: docker://maven:3-eclipse-temurin-17
+      run: mvn clean package  
+
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v2.0
+      with:
+        version: 'v1.27.0' # default is latest stable
+      id: install
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.ssingh_aws_access_key_id }}
+        aws-secret-access-key: ${{ secrets.ssingh_aws_secret_access_key_id }}
+        aws-region: ap-south-1
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: cloudbees-io/configure-ecr-credentials@v1
