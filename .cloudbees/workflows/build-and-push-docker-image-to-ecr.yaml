@@ -7,7 +7,7 @@ on:
       - "main"
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    uses: ubuntu-latest
     steps:
     - name: Checkout code
       uses: cloudbees-io/checkout@v1
