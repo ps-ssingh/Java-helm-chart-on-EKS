@@ -11,19 +11,15 @@ jobs:
     - name: Checkout code
       uses: cloudbees-io/checkout@v1
     - name: Set up JDK 11
-      uses: docker://eclipse-temurin:17.0.8_7-jdk
-      with:
-          java-version: '11'
-          distribution: 'temurin'
+      uses: adoptopenjdk/openjdk11
+      run: java --version
     - name: Build with Maven
       uses: docker://maven:3-eclipse-temurin-17
       run: mvn clean package  
 
-    - name: Install kubectl
-      uses: azure/setup-kubectl@v2.0
-      with:
-        version: 'v1.27.0' # default is latest stable
-      id: install
+    - name: check kubectl
+      uses: docker://bitnami/kubectl:latest
+      run : kubectl get ns
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
