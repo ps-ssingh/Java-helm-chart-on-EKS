@@ -16,12 +16,6 @@ jobs:
       run: |
        mvn clean package
 
-    - name: Install kubectl
-      uses: azure/setup-kubectl@v2.0
-      with:
-        version: 'v1.27.0' # default is latest stable
-      id: install
-
     - name: Configure AWS Credentials
       uses: cloudbees-io/configure-aws-credentials@v1
       with:
