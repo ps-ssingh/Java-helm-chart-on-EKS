@@ -26,3 +26,13 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: cloudbees-io/configure-ecr-credentials@v1
+
+    - name: Build, tag, and push docker image to Amazon ECR
+      uses: cloudbees-io/kaniko@v1
+      env:
+        REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        REPOSITORY: saas-test
+        IMAGE_TAG: latest
+      run: |
+        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
