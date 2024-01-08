@@ -19,6 +19,7 @@ jobs:
     - name: Configure AWS Credentials
       uses: cloudbees-io/configure-aws-credentials@v1
       with:
+        aws-region: us-east-1
         aws-access-key-id: ${{ secrets.ssingh_aws_access_key_id }}
         aws-secret-access-key: ${{ secrets.ssingh_aws_secret_access_key_id }}
 
