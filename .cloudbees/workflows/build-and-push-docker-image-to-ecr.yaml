@@ -6,7 +6,7 @@ on:
     branches:
       - "main"
 jobs:
-  deploy:
+  build:
     steps:
     - name: Checkout code
       uses: cloudbees-io/checkout@v1
@@ -31,3 +31,7 @@ jobs:
       uses: cloudbees-io/kaniko@v1
       with:
        destination: 324005994172.dkr.ecr.us-east-1.amazonaws.com/saas-test
+  
+  deploy:
+    needs:
+      - build
